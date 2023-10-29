@@ -1,4 +1,4 @@
-package utils
+package llg_utils
 
 import (
 	"crypto/sha1"

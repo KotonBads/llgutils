@@ -1,3 +1,3 @@
-module github.com/KotonBads/llg-utils/utils
+module github.com/KotonBads/llg_utils/utils
 
 go 1.20
