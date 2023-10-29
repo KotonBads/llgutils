@@ -1,4 +1,4 @@
-package llgutils
+package utils
 
 type LaunchBody struct {
 	OS      string

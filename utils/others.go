@@ -1,4 +1,4 @@
-package llgutils
+package utils
 
 import (
 	"crypto/sha1"
