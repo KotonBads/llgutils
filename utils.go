@@ -38,6 +38,11 @@ func CheckHash(path string, hash string) bool {
 }
 
 func DownloadFile(path string, url string) (err error) {
+	// create all folders
+	if err := os.MkdirAll(filepath.Dir(path), os.ModePerm); err != nil {
+		return err
+	}
+
 	// create file
 	out, err := os.Create(path)
 
