@@ -48,6 +48,7 @@ func (data LaunchMeta) DownloadCosmetics(path string) (err error) {
 
 			if err := DownloadFile(fp, data.Textures.BaseURL+hash); err != nil {
 				log.Printf("[WARN] Error downloading artifact: %s (%s)\n", fp, err)
+				return
 			}
 			log.Printf("[INFO] Downloaded artifact: %s\n", fp)
 		}(val)

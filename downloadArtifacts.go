@@ -28,6 +28,7 @@ func (data LaunchMeta) DownloadArtifacts(path string) (err error) {
 
 			if err := DownloadFile(fp, artifact.Url); err != nil {
 				log.Printf("[WARN] Error downloading artifact: %s (%s)\n", artifact.Name, err)
+				return
 			}
 			log.Printf("[INFO] Downloaded artifact: %s\n", artifact.Name)
 		}(val)
