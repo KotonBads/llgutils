@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"time"
 )
 
 func IfExists(path string) bool {
@@ -52,7 +53,10 @@ func DownloadFile(path string, url string) (err error) {
 	defer out.Close()
 
 	// send request
-	resp, err := http.Get(url)
+	client := http.Client{
+		Timeout: time.Second * 30,
+	}
+	resp, err := client.Get(url)
 
 	if err != nil {
 		return err
