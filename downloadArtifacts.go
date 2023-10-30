@@ -23,6 +23,7 @@ func (data LaunchMeta) DownloadArtifacts(path string) (err error) {
 
 			if IfExists(fp) && CheckHash(fp, artifact.Sha1) {
 				log.Printf("[INFO] Artifact already up to date: %s\n", artifact.Name)
+				return
 			}
 
 			if err := DownloadFile(fp, artifact.Url); err != nil {
@@ -31,6 +32,8 @@ func (data LaunchMeta) DownloadArtifacts(path string) (err error) {
 			log.Printf("[INFO] Downloaded artifact: %s\n", artifact.Name)
 		}(val)
 	}
+
+	wg.Wait()
 
 	return nil
 }
