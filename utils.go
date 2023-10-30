@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"net/http"
 	"os"
 )
 
@@ -32,4 +33,34 @@ func CheckHash(path string, hash string) bool {
 		return true
 	}
 	return false
+}
+
+func DownloadFile(path string, url string) (err error) {
+	// create file
+	out, err := os.Create(path)
+
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+
+	// send request
+	resp, err := http.Get(url)
+
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	// check status code
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("bad status: %s", resp.Status)
+	}
+
+	// write to file
+	if _, err := io.Copy(out, resp.Body); err != nil {
+		return err
+	}
+
+	return nil
 }
