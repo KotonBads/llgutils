@@ -29,6 +29,7 @@ func FetchLaunchMeta(launchdata LaunchBody) (response LaunchMeta, err error) {
 
 	// create request
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonVal))
+	req.Header.Set("Content-Type", "application/json")
 
 	if err != nil {
 		return res, err
@@ -48,5 +49,5 @@ func FetchLaunchMeta(launchdata LaunchBody) (response LaunchMeta, err error) {
 		return res, fmt.Errorf("couldn't Unmarshal response: %s", err)
 	}
 
-	return res, err
+	return res, fmt.Errorf("%s (%s)", err, body)
 }
