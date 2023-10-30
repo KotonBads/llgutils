@@ -27,19 +27,26 @@ func FetchLaunchMeta(launchdata LaunchBody) (response LaunchMeta, err error) {
 
 	client := &http.Client{}
 
-	if req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonVal)); err == nil {
-		req.Header.Set("Content-Type", "application/json")
-		// req.Header.Set("User-Agent", "Lunar Client Launcher v2.16.1")
+	// create request
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonVal))
 
-		if resp, err := client.Do(req); err == nil {
-			body, _ := io.ReadAll(resp.Body)
-			fmt.Println(string(body))
-
-			if err := json.Unmarshal(body, &res); err != nil {
-				fmt.Printf("Couldn't Unmarshal the response: %s\n", err)
-			}
-			return res, err
-		}
+	if err != nil {
+		return res, err
 	}
+
+	// send request
+	resp, err := client.Do(req)
+
+	if err != nil {
+		return res, err
+	}
+
+	// unmarshal response into res
+	body, _ := io.ReadAll(resp.Body)
+
+	if err := json.Unmarshal(body, &res); err != nil {
+		return res, fmt.Errorf("couldn't Unmarshal response: %s", err)
+	}
+
 	return res, err
 }
