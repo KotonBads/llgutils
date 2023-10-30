@@ -9,7 +9,7 @@ import (
 	"sync"
 )
 
-func (data LaunchMeta) DownloadCosmetcis(path string) (err error) {
+func (data LaunchMeta) DownloadCosmetics(path string) (err error) {
 	if !data.Success {
 		return fmt.Errorf("[API] Success: False")
 	}
