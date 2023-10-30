@@ -15,6 +15,7 @@ func (data LaunchMeta) DownloadCosmetics(path string) (err error) {
 	}
 
 	var wg sync.WaitGroup
+	counter := 0
 
 	// get main index
 	res, err := http.Get(data.Textures.IndexURL)
@@ -47,14 +48,16 @@ func (data LaunchMeta) DownloadCosmetics(path string) (err error) {
 			}
 
 			if err := DownloadFile(fp, data.Textures.BaseURL+hash); err != nil {
-				log.Printf("[WARN] Error downloading artifact: %s (%s)\n", fp, err)
+				log.Printf("[WARN] Error downloading asset: %s (%s)\n", fp, err)
+				counter++
 				return
 			}
-			log.Printf("[INFO] Downloaded artifact: %s\n", fp)
+			log.Printf("[INFO] Downloaded asset: %s\n", fp)
 		}(val)
 	}
 
 	wg.Wait()
+	log.Printf("[INFO] Downloaded assets with %d failures", counter)
 
 	return nil
 }

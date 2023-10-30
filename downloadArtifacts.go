@@ -12,6 +12,7 @@ func (data LaunchMeta) DownloadArtifacts(path string) (err error) {
 	}
 
 	var wg sync.WaitGroup
+	counter := 0
 
 	for _, val := range data.LaunchTypeData.Artifacts {
 		wg.Add(1)
@@ -28,6 +29,7 @@ func (data LaunchMeta) DownloadArtifacts(path string) (err error) {
 
 			if err := DownloadFile(fp, artifact.Url); err != nil {
 				log.Printf("[WARN] Error downloading artifact: %s (%s)\n", artifact.Name, err)
+				counter++
 				return
 			}
 			log.Printf("[INFO] Downloaded artifact: %s\n", artifact.Name)
@@ -35,6 +37,7 @@ func (data LaunchMeta) DownloadArtifacts(path string) (err error) {
 	}
 
 	wg.Wait()
+	log.Printf("[INFO] Downloaded artifacts with %d failures", counter)
 
 	return nil
 }
