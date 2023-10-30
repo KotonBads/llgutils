@@ -1,6 +1,7 @@
 package llgutils
 
 import (
+	"archive/zip"
 	"crypto/sha1"
 	"errors"
 	"fmt"
@@ -8,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 )
 
 func IfExists(path string) bool {
@@ -60,6 +62,47 @@ func DownloadFile(path string, url string) (err error) {
 	// write to file
 	if _, err := io.Copy(out, resp.Body); err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func Unzip(src string, dest string) error {
+	r, err := zip.OpenReader(src)
+	if err != nil {
+		return err
+	}
+	defer r.Close()
+
+	// Create destination directory if it doesn't exist
+	os.MkdirAll(dest, os.ModePerm)
+
+	// Extract files
+	for _, f := range r.File {
+		rc, err := f.Open()
+		if err != nil {
+			return err
+		}
+		defer rc.Close()
+
+		path := filepath.Join(dest, f.Name)
+
+		if f.FileInfo().IsDir() {
+			os.MkdirAll(path, os.ModePerm)
+		} else {
+			// Create file
+			f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, f.Mode())
+			if err != nil {
+				return err
+			}
+			defer f.Close()
+
+			// Write file contents
+			_, err = io.Copy(f, rc)
+			if err != nil {
+				return err
+			}
+		}
 	}
 
 	return nil
