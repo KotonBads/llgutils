@@ -2,17 +2,18 @@ package llgutils
 
 import "fmt"
 
-func (data LaunchMeta) SortFiles(path string) (classpath []string, external []string, natives []string) {
+func (data LaunchMeta) SortFiles(path string) (classpath []string, ichorClassPath []string, external []string, natives []string) {
 	for _, val := range data.LaunchTypeData.Artifacts {
 		switch val.Type {
 		case "CLASS_PATH":
 			classpath = append(classpath, fmt.Sprintf("%s/%s", path, val.Name))
+			ichorClassPath = append(ichorClassPath, val.Name)
 		case "EXTERNAL_FILE":
-			external = append(external, fmt.Sprintf("%s/%s", path, val.Name))
+			external = append(external, val.Name)
 		case "NATIVES":
 			natives = append(natives, fmt.Sprintf("%s/%s", path, val.Name))
 		}
 	}
 
-	return classpath, external, natives
+	return classpath, ichorClassPath, external, natives
 }
