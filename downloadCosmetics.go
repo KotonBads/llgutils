@@ -15,6 +15,7 @@ func (data LaunchMeta) DownloadCosmetics(path string) (err error) {
 	}
 
 	var wg sync.WaitGroup
+	var failed []map[string]string
 	counter := 0
 
 	// get main index
@@ -49,6 +50,10 @@ func (data LaunchMeta) DownloadCosmetics(path string) (err error) {
 
 			if err := DownloadFile(fp, data.Textures.BaseURL+hash); err != nil {
 				log.Printf("[WARN] Error downloading asset: %s (%s)\n", fp, err)
+				failed = append(failed, map[string]string{
+					"path": fp,
+					"url":  data.Textures.BaseURL + hash,
+				})
 				counter++
 				return
 			}
@@ -57,7 +62,27 @@ func (data LaunchMeta) DownloadCosmetics(path string) (err error) {
 	}
 
 	wg.Wait()
-	log.Printf("[INFO] Downloaded assets with %d failures", counter)
+	if counter != 0 {
+		log.Printf("[INFO] Downloaded assets with %d failures, retrying...", counter)
+
+		for i := 0; 0 < counter; i++ {
+			if err := DownloadFile(failed[i]["path"], failed[i]["url"]); err != nil {
+				log.Printf(
+					"[WARN] Error downloading asset: %s (%s)\n",
+					failed[i]["path"],
+					failed[i]["url"],
+				)
+				failed = append(failed, map[string]string{
+					"path": failed[i]["path"],
+					"url":  failed[i]["url"],
+				})
+				counter++
+				continue
+			}
+			log.Printf("[INFO] Downloaded asset: %s\n", failed[i]["path"])
+			counter--
+		}
+	}
 
 	return nil
 }
