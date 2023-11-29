@@ -42,4 +42,13 @@ type LaunchMeta struct {
 		JavawExeChecksum        interface{} `json:"javawExeChecksum"`
 		JavaExeChecksum         string      `json:"javaExeChecksum"`
 	} `json:"jre"`
+	Error struct {
+		Issues []struct {
+			Code     string   `json:"error"`
+			Expected string   `json:"expected"`
+			Received string   `json:"received"`
+			Path     []string `json:"path"`
+			Message  string   `json:"message"`
+		} `json:"issues"`
+	} `json:"error"`
 }
