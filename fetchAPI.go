@@ -8,6 +8,13 @@ import (
 	"net/http"
 )
 
+// Fetches Lunar's API.
+//
+// Takes in a `LaunchBody` type. 
+//
+// Returns a `LaunchMeta` type.
+//
+// TODO: make this into LaunchBody.FetchLaunchMeta
 func FetchLaunchMeta(launchdata LaunchBody) (response LaunchMeta, err error) {
 	url := "https://api.lunarclientprod.com/launcher/launch"
 

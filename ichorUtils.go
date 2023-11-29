@@ -2,6 +2,11 @@ package llgutils
 
 import "fmt"
 
+// Sorts Lunar's artifacts by TYPE.
+//
+// Specify the path to Lunar's artifacts with `path`.
+//
+// Returns []string: classpath, ichorClassPath, external, natives.
 func (data LaunchMeta) SortFiles(path string) (classpath []string, ichorClassPath []string, external []string, natives []string) {
 	for _, val := range data.LaunchTypeData.Artifacts {
 		switch val.Type {

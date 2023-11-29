@@ -6,6 +6,9 @@ import (
 	"sync"
 )
 
+// Downloads Lunar's artifacts from API.
+//
+// Specify where to download artifacts with `path`.
 func (data LaunchMeta) DownloadArtifacts(path string) (err error) {
 	if !data.Success {
 		return fmt.Errorf("[API] Success: False")

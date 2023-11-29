@@ -9,6 +9,9 @@ import (
 	"sync"
 )
 
+// Downloads Lunar's cosmetics and various textures from API concurrently.
+//
+// Specify where to download artifacts with `path`.
 func (data LaunchMeta) DownloadCosmetics(path string) (err error) {
 	if !data.Success {
 		return fmt.Errorf("[API] Success: False")
