@@ -29,7 +29,7 @@ func main() {
 		Version: "1.8.9",
 		Module:  "forge",
 	}
-	launchmeta, _ := utils.FetchLaunchMeta(launchbody)
+	launchmeta, _ := launchbody.FetchLaunchMeta()
 	launchmeta.DownloadArtifacts("temp")
 	launchmeta.DownloadCosmetics("temp/textures")
 }
